@@ -1,0 +1,96 @@
+call plug#begin()
+Plug 'rfunix/vim-greenisgood'
+Plug 'terryma/vim-multiple-cursors'
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+Plug 'sheerun/vim-polyglot'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
+Plug 'w0rp/ale'
+Plug 'jiangmiao/auto-pairs'
+"Plug 'maxboisvert/vim-simple-complete'
+Plug 'elixir-editors/vim-elixir'
+Plug 'mhinz/vim-mix-format'
+Plug 'scrooloose/nerdtree'
+Plug 'farfanoide/vim-kivy'
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'morhetz/gruvbox'
+Plug 'vim-scripts/indentpython.vim'
+Plug 'vim-syntastic/syntastic'
+Plug 'nvie/vim-flake8'
+Plug 'tpope/vim-fugitive'
+Plug 'Chiel92/vim-autoformat'
+Plug 'hashivim/vim-terraform'
+
+
+call plug#end()
+
+let g:deoplete#enable_at_startup = 1
+
+set hidden
+set number
+set relativenumber
+set inccommand=split
+set encoding=utf-8
+set clipboard=unnamed
+syntax on
+
+let mapleader=","
+
+nnoremap <leader>sv :source ~/.config/nvim/init.vim<cr>
+
+nnoremap <c-p> :Files<cr>
+nnoremap <c-f> :Ag<cr>
+
+"Split pane
+nnoremap <leader>v :vsplit<cr>
+nnoremap <leader>h :split<cr>
+
+"Move between the panes
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>
+nnoremap <C-H> <C-W><C-H>
+
+set splitbelow
+set splitright
+
+colorscheme greenisgood
+set background=dark
+"colorscheme gruvbox
+
+"Nerdtree
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+nnoremap <leader>nn :NERDTreeToggle<CR>
+
+"Tabs
+nnoremap <leader>tp :tabp<cr>
+nnoremap <leader>t<leader> :tabn<cr>
+nnoremap <leader>tn :tabnew<cr>
+
+""VIM GO
+setlocal omnifunc=go#complete#Complete
+" <TAB>: completion.
+inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+let g:go_fmt_command = "goimports"
+
+"Elixir
+let g:mix_format_on_save = 1
+
+"Python
+au BufNewFile,BufRead *.py set tabstop=4
+au BufNewFile,BufRead *.py set softtabstop=4
+au BufNewFile,BufRead *.py set shiftwidth=4
+au BufNewFile,BufRead *.py set textwidth=109
+au BufNewFile,BufRead *.py set expandtab
+au BufNewFile,BufRead *.py set autoindent
+au BufNewFile,BufRead *.py set fileformat=unix
+let python_highlight_all=1
+
+" vim-autoformat
+noremap <F3> :Autoformat<CR>
+
+" terraform
+let g:terraform_align=1
+let g:terraform_fold_sections=1
+let g:terraform_fmt_on_save=1

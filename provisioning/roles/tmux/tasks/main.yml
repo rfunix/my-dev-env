@@ -1,0 +1,13 @@
+---
+- name: install tmux
+  apt:
+    name: tmux
+    state: latest
+
+- name:  copy tmux.conf
+  template:
+    src: tmux.conf.j2
+    dest: "{{ home_directory }}.tmux.conf"
+    mode: '755'
+    owner: vagrant
+    group: vagrant

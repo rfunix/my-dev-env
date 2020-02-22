@@ -1,0 +1,75 @@
+---
+- name: clone fzf
+  git:
+    repo: https://github.com/junegunn/fzf.git
+    depth: 1
+    dest: "{{ home_directory }}fzf"
+
+- name: install fzf
+  shell: yes 'y' | {{ home_directory }}fzf/install
+
+- name: install ag silver search
+  apt:
+    name: silversearcher-ag
+    state: latest
+
+- name: install httpie
+  apt:
+    name: httpie
+    state: latest
+
+- name: install jq
+  apt:
+    name: jq
+    state: latest
+
+- name: install powerline fonts
+  apt:
+    name: fonts-powerline
+    state: latest
+
+- name: install firacode fonts
+  apt:
+    name: fonts-firacode
+    state: latest
+
+- name: install snapd
+  apt:
+    name: snapd
+    state: latest
+
+- name: install starship prompt
+  shell: snap install starship
+
+- name: check if starship in bashrc
+  shell: "grep -i 'starship init' {{ home_directory }}.bashrc"
+  register: check_starship
+  ignore_errors: true
+
+- name: add starship in bashrc
+  lineinfile:
+    dest: "{{ home_directory }}.bashrc"
+    line: eval "$(starship init bash)"
+  when: check_starship.stdout == ""
+
+- name: clone pyenv
+  git:
+    repo: https://github.com/pyenv/pyenv.git
+    depth: 1
+    dest: "{{ home_directory }}.pyenv"
+
+- name: check if pyenv in bashrc
+  shell: "grep -i 'pyenv/bin' {{ home_directory }}.bashrc"
+  register: check_pyenv
+  ignore_errors: true
+
+- name: add pyenv in bashrc
+  lineinfile:
+    dest: "{{ home_directory }}.bashrc"
+    line: export PATH="{{ home_directory }}.pyenv/bin:$PATH"
+  when: check_pyenv.stdout == ""
+
+- name: install pipenv
+  pip:
+    name: pipenv
+    executable: pip3

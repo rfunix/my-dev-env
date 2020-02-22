@@ -1,0 +1,11 @@
+---
+- name: install npm
+  apt:
+    name: npm
+    state: latest
+
+- name: change /usr/local folder owner #https://github.com/npm/npm/issues/2049#issuecomment-230134212
+  file:
+    path: /usr/local
+    owner: vagrant
+    group: vagrant
