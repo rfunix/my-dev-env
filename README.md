@@ -3,7 +3,7 @@
 **Requirements**:
 [vagrant](https://www.vagrantup.com)
 
-How use:
+How to use:
 
 ```bash
 $ vagrant up
