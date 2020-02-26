@@ -1,75 +1,72 @@
 ---
-- name: clone fzf
+- name: clone fzf repo
   git:
-    repo: https://github.com/junegunn/fzf.git
-    depth: 1
-    dest: "{{ home_directory }}fzf"
-
-- name: install fzf
-  shell: yes 'y' | {{ home_directory }}fzf/install
+    repo: https://github.com/junegunn/fzf
+    dest: ~/.fzf
+  notify:
+    - install fzf
 
 - name: install ag silver search
   apt:
     name: silversearcher-ag
     state: latest
+  become: yes
 
 - name: install httpie
   apt:
     name: httpie
     state: latest
+  become: yes
 
 - name: install jq
   apt:
     name: jq
     state: latest
+  become: yes
 
 - name: install powerline fonts
   apt:
     name: fonts-powerline
     state: latest
+  become: yes
 
 - name: install firacode fonts
   apt:
     name: fonts-firacode
     state: latest
+  become: yes
 
 - name: install snapd
   apt:
     name: snapd
     state: latest
+  become: yes
 
 - name: install starship prompt
   shell: snap install starship
-
-- name: check if starship in bashrc
-  shell: "grep -i 'starship init' {{ home_directory }}.bashrc"
-  register: check_starship
-  ignore_errors: true
+  become: yes
 
 - name: add starship in bashrc
-  lineinfile:
-    dest: "{{ home_directory }}.bashrc"
-    line: eval "$(starship init bash)"
-  when: check_starship.stdout == ""
+  blockinfile:
+    path: ~/.bashrc
+    marker: "# {mark} ANSIBLE MANAGED BLOCK - starship"
+    block: |
+      eval "$(starship init bash)"
 
-- name: clone pyenv
-  git:
-    repo: https://github.com/pyenv/pyenv.git
-    depth: 1
-    dest: "{{ home_directory }}.pyenv"
+- name: install libpq-dev
+  apt:
+    name: libpq-dev
+    state: latest
+  become: yes
 
-- name: check if pyenv in bashrc
-  shell: "grep -i 'pyenv/bin' {{ home_directory }}.bashrc"
-  register: check_pyenv
-  ignore_errors: true
+- name: install postgresql
+  apt:
+    name: postgresql
+    state: latest
+  become: yes
 
-- name: add pyenv in bashrc
-  lineinfile:
-    dest: "{{ home_directory }}.bashrc"
-    line: export PATH="{{ home_directory }}.pyenv/bin:$PATH"
-  when: check_pyenv.stdout == ""
-
-- name: install pipenv
-  pip:
-    name: pipenv
-    executable: pip3
+- name: install postgresql-contrib
+  apt:
+    name: postgresql-contrib
+    state: latest
+  become: yes

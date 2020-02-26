@@ -1,10 +1,12 @@
 ---
 - name: install pip3
+  become: yes
   apt:
     name: python3-pip
     state: latest
 
 - name: install pip
+  become: yes
   apt:
     name: python-pip
     state: latest

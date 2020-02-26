@@ -7,7 +7,4 @@
 - name:  copy tmux.conf
   template:
     src: tmux.conf.j2
-    dest: "{{ home_directory }}.tmux.conf"
-    mode: '755'
-    owner: vagrant
-    group: vagrant
+    dest: ~/.tmux.conf

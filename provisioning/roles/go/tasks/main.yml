@@ -1,27 +1,23 @@
 ---
 - name: Add go ppa
   apt_repository: repo=ppa:longsleep/golang-backports state=present
+  become: yes
 
 - name: install go
   apt:
     name: golang-go
     state: latest
     update_cache: yes
+  become: yes
 
 - name: create gopath
   file:
-    path: "{{ home_directory }}development/go"
+    path: ~/development/go
     state: directory
-    owner: vagrant
-    group: vagrant
 
-- name: check if GOPATH already include in bashrc
-  shell: "grep -i 'GOPATH' {{ home_directory }}.bashrc"
-  register: check_gopath
-  ignore_errors: true
-
-- name: Add gopath in PATH
-  lineinfile:
-    dest: "{{ home_directory }}.bashrc"
-    line: GOPATH={{ home_directory }}development/go
-  when: check_gopath.stdout == ""
+- name: add gopath variables to bash
+  blockinfile:
+    path: ~/.bashrc
+    marker: "# {mark} ANSIBLE MANAGED BLOCK - gopath"
+    block: |
+      GOPATH=~/development/go

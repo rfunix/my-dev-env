@@ -1,56 +1,49 @@
 ---
 - name: Add neovim ppa 
   apt_repository: repo=ppa:neovim-ppa/stable state=present
+  become: yes
 
 - name: install neovim
   apt:
     name: neovim
     state: latest
     update_cache: yes
+  become: yes
 
 - name: use nvim for vi
   alternatives: name=vi path=/usr/bin/nvim
+  become: yes
 
 - name: use nvim for vim
   alternatives: name=vim path=/usr/bin/nvim
+  become: yes
 
 - name: use nvim for editor
   alternatives: name=editor path=/usr/bin/nvim
+  become: yes
 
 - name: create neovim config folder
   file:
-    path: "{{ home_directory }}.config/nvim"
+    path: ~/.config/nvim
     state: directory
-    mode: '755'
-    owner: vagrant
-    group: vagrant
 
 - name: create neovim autoload folder
   file:
-    path: "{{ home_directory }}.config/nvim/autoload"
+    path: ~/.config/nvim/autoload
     state: directory
-    mode: '755'
-    owner: vagrant
-    group: vagrant
 
 - name: create neovim plugged folder
   file:
-    path: "{{ home_directory }}.config/nvim/plugged"
+    path: ~/.config/nvim/plugged
     state: directory
-    mode: '755'
-    owner: vagrant
-    group: vagrant
 
 - name: copy init.vim
   template:
     src: init.vim.j2
-    dest: "{{ home_directory }}.config/nvim/init.vim"
-    mode: '755'
-    owner: vagrant
-    group: vagrant
+    dest: ~/.config/nvim/init.vim
 
 - name: install plug
   get_url:
     url: https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-    dest: "{{ home_directory }}.config/nvim/autoload"
+    dest: ~/.config/nvim/autoload
     force: yes

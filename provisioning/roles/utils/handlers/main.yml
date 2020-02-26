@@ -1,2 +1,6 @@
 ---
-# handlers file for utils
+- name: install fzf
+  shell: ./install --all
+  args:
+    chdir: ~/.fzf/
+    executable: /bin/bash
