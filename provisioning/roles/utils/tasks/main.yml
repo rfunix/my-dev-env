@@ -1,4 +1,14 @@
 ---
+- name: create ssh keys dir
+  file:
+    path: ~/.ssh
+    state: directory
+
+- name: set timezone
+  become: yes
+  timezone:
+    name: America/Sao_Paulo
+
 - name: clone fzf repo
   git:
     repo: https://github.com/junegunn/fzf
@@ -70,3 +80,12 @@
     name: postgresql-contrib
     state: latest
   become: yes
+
+- name: DEBIAN | Set URL to download bins
+  set_fact:
+    debian_url: "https://github.com/sharkdp/bat/releases/download/v0.12.1/bat_0.12.1_amd64.deb"
+
+- name: DEBIAN | Install deb from github
+  become: true
+  apt:
+    deb: "{{ debian_url }}"

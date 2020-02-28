@@ -11,6 +11,13 @@
     name: python-pip
     state: latest
 
+- name: update pip
+  become: yes
+  pip:
+    name: pip
+    state: latest
+    executable: pip3
+
 - name: install msgpack
   pip:
     name: msgpack
@@ -19,4 +26,9 @@
 - name: install pynvim
   pip:
     name: pynvim
+    executable: pip3
+
+- name: install docker-compose
+  pip:
+    name: docker-compose
     executable: pip3
