@@ -1,10 +1,10 @@
 Vagrant.configure("2") do |config|
   config.vm.provider "virtualbox" do |vbox|
-    vbox.memory = 8192
+    vbox.memory = 4192
     vbox.cpus = 2
   end
 
-  config.vm.network "forwarded_port", guest: 8000, host: 8080
+  config.vm.network "public_network"
   config.vm.box = "hashicorp/bionic64"
 
   config.vm.provision :ansible_local do |ansible|
