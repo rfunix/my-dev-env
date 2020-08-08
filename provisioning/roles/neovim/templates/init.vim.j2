@@ -1,11 +1,10 @@
 call plug#begin()
 Plug 'rfunix/vim-greenisgood'
 Plug 'terryma/vim-multiple-cursors'
-Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'sheerun/vim-polyglot'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
-Plug 'w0rp/ale'
+Plug 'dense-analysis/ale'
 Plug 'jiangmiao/auto-pairs'
 "Plug 'maxboisvert/vim-simple-complete'
 Plug 'elixir-editors/vim-elixir'
@@ -13,15 +12,27 @@ Plug 'mhinz/vim-mix-format'
 Plug 'scrooloose/nerdtree'
 Plug 'farfanoide/vim-kivy'
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'morhetz/gruvbox'
-Plug 'arcticicestudio/nord-vim'
 Plug 'vim-scripts/indentpython.vim'
 Plug 'vim-syntastic/syntastic'
 Plug 'nvie/vim-flake8'
 Plug 'tpope/vim-fugitive'
 Plug 'Chiel92/vim-autoformat'
+Plug 'arcticicestudio/nord-vim'
+Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' }
 Plug 'hashivim/vim-terraform'
-
+Plug 'posva/vim-vue'
+Plug 'mattn/emmet-vim'
+Plug 'pangloss/vim-javascript'
+Plug 'sbdchd/neoformat'
+Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
+Plug 'ewilazarus/preto'
+Plug 'hardselius/warlock'
+Plug 'pgdouyon/vim-yin-yang'
+Plug 'wadackel/vim-dogrun'
+Plug 'airblade/vim-gitgutter'
+Plug 'cespare/vim-toml'
 
 call plug#end()
 
@@ -52,12 +63,24 @@ nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
 
+" Move to the previous buffer with "gp"
+nnoremap gp :bp<CR>
+
+" Move to the next buffer with "gn"
+nnoremap gn :bn<CR>
+
+" List all possible buffers with "gl"
+nnoremap gl :ls<CR>
+
+" List all possible buffers with "gb" and accept a new buffer argument [1]
+nnoremap gb :ls<CR>:b
+
 set splitbelow
 set splitright
 
 colorscheme nord
+"colorscheme yang
 set background=dark
-"colorscheme gruvbox
 
 "Nerdtree
 autocmd StdinReadPre * let s:std_in=1
@@ -88,10 +111,43 @@ au BufNewFile,BufRead *.py set autoindent
 au BufNewFile,BufRead *.py set fileformat=unix
 let python_highlight_all=1
 
+au bufnewfile,bufread *.html set tabstop=2
+au bufnewfile,bufread *.html set softtabstop=2
+au bufnewfile,bufread *.html set shiftwidth=2
+au bufnewfile,bufread *.html set expandtab
+au bufnewfile,bufread *.html set autoindent
+au bufnewfile,bufread *.html set fileformat=unix
+
+au bufnewfile,bufread *.svelte set tabstop=2
+au bufnewfile,bufread *.svelte set softtabstop=2
+au bufnewfile,bufread *.svelte set shiftwidth=2
+au bufnewfile,bufread *.svelte set expandtab
+au bufnewfile,bufread *.svelte set autoindent
+au bufnewfile,bufread *.svelte set fileformat=unix
+
+au bufnewfile,bufread *.js set tabstop=2
+au bufnewfile,bufread *.js set softtabstop=2
+au bufnewfile,bufread *.js set shiftwidth=2
+au bufnewfile,bufread *.js set expandtab
+au bufnewfile,bufread *.js set autoindent
+au bufnewfile,bufread *.js set fileformat=unix
+
+
 " vim-autoformat
 noremap <F3> :Autoformat<CR>
 
 " terraform
 let g:terraform_align=1
-let g:terraform_fold_sections=1
 let g:terraform_fmt_on_save=1
+
+let g:ale_fixers = {
+\   'javascript': ['prettier'],
+\   'css': ['prettier'],
+\}
+
+let g:ale_linters_explicit = 1
+
+let g:ale_fix_on_save = 1
+let g:ale_javascript_prettier_options = '--single-quote --trailing-comma es5'
+
+let g:clap_theme = 'dogrun'
